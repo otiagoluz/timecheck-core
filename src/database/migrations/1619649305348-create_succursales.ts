@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner, Table} from "typeorm";
+import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
 
 export class createSuccursales1619649305348 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -28,7 +28,7 @@ export class createSuccursales1619649305348 implements MigrationInterface {
           precision: 2
         },
         {
-          name: 'latitude',
+          name: 'longitude',
           type: 'decimal',
           scale: 10,
           precision: 2
@@ -42,25 +42,41 @@ export class createSuccursales1619649305348 implements MigrationInterface {
           type: 'varchar',
         },
         {
-          name: 'provinve',
+          name: 'province',
           type: 'varchar'
         },
         {
           name: 'postal_code',
           type: 'varchar'
         },
+      ],
+    }))
+
+    await queryRunner.createTable(new Table({
+      name: 'succursales_users_users',
+      columns: [
         {
-          name: 'user_id',
-          type: 'integer'
+          name: 'succursalesId',
+          type: "int",
+          isPrimary: true
+        },
+        {
+          name: 'usersId',
+          type: "int",
+          isPrimary: true
         }
       ],
       foreignKeys: [
         {
-          name: 'SuccursaleUser',
-          columnNames: ['user_id'],
-          referencedTableName: 'users',
+          columnNames: ['succursalesId'],
           referencedColumnNames: ['id'],
-          onUpdate: 'CASCADE',
+          referencedTableName: 'succursales',
+          onDelete: 'CASCADE'          
+        },
+        {
+          columnNames: ['usersId'],
+          referencedColumnNames: ['id'],
+          referencedTableName: 'users',
           onDelete: 'CASCADE'
         }
       ]
@@ -69,6 +85,7 @@ export class createSuccursales1619649305348 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('succursales');
+    await queryRunner.dropTable('succursales_users_users');
   }
 
 }

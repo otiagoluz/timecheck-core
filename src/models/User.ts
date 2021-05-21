@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import Succursale from "./Succursale";
 
 @Entity('users')
 export default class User {
@@ -19,4 +20,7 @@ export default class User {
   
   @Column()
   is_admin: boolean;
+
+  @ManyToMany(type => Succursale, succursale => succursale.users) 
+  succursales: Succursale[];
 }

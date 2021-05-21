@@ -27,15 +27,17 @@ export default {
       last_name,
       email,
       password,
-      is_admin
-    } = req.body
+      is_admin,
+      succursales
+    } = req.body as User;
     
     const user = usersRepository.create({
       first_name,
       last_name,
       email,
       password,
-      is_admin
+      is_admin,
+      succursales
     });
     await usersRepository.save(user);
     return resp.status(200).json(user);
